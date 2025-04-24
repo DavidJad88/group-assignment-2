@@ -1,0 +1,7 @@
+.plantListContainer {
+  width: 100%;
+  height: auto;
+  display: flex;
+  padding: var(--spacing-lg);
+  list-style: none;
+}

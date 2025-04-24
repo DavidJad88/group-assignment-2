@@ -1,0 +1,23 @@
+.searchContainer {
+  width: 500px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchLabel {
+  display: flex;
+  flex-basis: 25%;
+  justify-content: end;
+  padding-right: var(--spacing-sm);
+}
+
+.searchInput {
+  display: flex;
+  flex-basis: 75%;
+  height: 32px;
+  padding-left: var(--spacing-sm);
+  border-radius: var(--radius-medium);
+  border: 2px solid var(--color-border);
+}
