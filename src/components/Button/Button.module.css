@@ -1,0 +1,22 @@
+.button {
+  height: 48px;
+  width: 120px;
+  background-color: var(--color-button-primary);
+  font-size: var(--font-size-base);
+  color: white;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-small);
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--color-button-hover);
+}
+.button:active {
+  background-color: var(--color-button-active);
+}
+.button:disabled {
+  background-color: var(--color-primary-light);
+  cursor: not-allowed;
+}
