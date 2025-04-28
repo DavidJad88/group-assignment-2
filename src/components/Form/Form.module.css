@@ -2,3 +2,81 @@
   font-size: var(--font-size-small);
   color: var(--color-text-muted);
 }
+
+.form {
+  width: 50%;
+  max-width: 650px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 600px;
+  background-color: var(--color-background-card);
+  padding: var(--spacing-xl);
+  gap: var(--spacing-sm);
+  border-radius: var(--radius-small);
+  color: var(--color-text-primary);
+}
+
+.formTitle {
+  font-size: var(--font-size-title);
+  padding: var(--spacing-md) 0;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding-top: var(--spacing-xs);
+}
+
+.formGroup input, 
+.formGroup select {
+  height: 32px;
+  font-size: var(--font-size-base);
+  padding-left: var(--spacing-xs);
+}
+
+.formGroup label {
+  font-size: var(--font-size-large);
+}
+
+.radioContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.radioContainer label {
+  font-size: var(--font-size-base);
+}
+
+.radioContainer input:checked {
+  accent-color: var(--color-button-primary);
+}
+
+.buttonContainer {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-end;
+  padding-top: var(--spacing-md);
+}
+
+@media screen and (max-width: 1024px) {
+  .form {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form {
+    width: 85%;
+    padding: var(--spacing-lg);
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .form {
+    width: 100%;
+    padding: var(--spacing-md);
+  }
+}
