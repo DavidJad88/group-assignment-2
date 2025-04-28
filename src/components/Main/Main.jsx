@@ -11,8 +11,8 @@ const Main = () => {
   const [isAddingPlant, setIsAddingPlant] = useState(false);
 
   const handleChange = () => {
-    setIsAddingPlant(true)
-  }
+    setIsAddingPlant(true);
+  };
 
   return (
     <>
@@ -23,7 +23,12 @@ const Main = () => {
           <Button onClick={handleChange}>Add New</Button>
         </div>
         <PlantList />
-        {isAddingPlant && <FormModal></FormModal>}
+        {isAddingPlant && (
+          <FormModal
+            isAddingPlant={isAddingPlant}
+            setIsAddingPlant={setIsAddingPlant}
+          ></FormModal>
+        )}
       </main>
     </>
   );

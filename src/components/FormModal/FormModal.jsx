@@ -1,10 +1,12 @@
 import Form from "../Form/Form";
 import styles from "./FormModal.module.css";
 
-const FormModal = () => {
-  return <div className={styles.formModal}>
-      <Form/>
-  </div>;
+const FormModal = ({ isAddingPlant, setIsAddingPlant }) => {
+  return (
+    <div className={styles.formModal}>
+      <Form isAddingPlant={isAddingPlant} setIsAddingPlant={setIsAddingPlant} />
+    </div>
+  );
 };
 
 export default FormModal;
