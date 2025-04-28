@@ -1,20 +1,16 @@
-.label {
-  font-size: var(--font-size-small);
-  color: var(--color-text-muted);
-}
-
 .form {
   width: 50%;
   max-width: 650px;
+  min-height: 600px;
   height: auto;
   display: flex;
   flex-direction: column;
-  min-height: 600px;
   background-color: var(--color-background-card);
   padding: var(--spacing-xl);
   gap: var(--spacing-sm);
   border-radius: var(--radius-small);
   color: var(--color-text-primary);
+  z-index: 1000;
 }
 
 .formTitle {
@@ -29,11 +25,14 @@
   padding-top: var(--spacing-xs);
 }
 
-.formGroup input, 
+.formGroup input,
 .formGroup select {
   height: 32px;
   font-size: var(--font-size-base);
-  padding-left: var(--spacing-xs);
+
+  padding-left: var(--spacing-sm);
+  border-radius: var(--radius-medium);
+  border: 2px solid var(--color-border);
 }
 
 .formGroup label {
@@ -52,6 +51,22 @@
 
 .radioContainer input:checked {
   accent-color: var(--color-button-primary);
+}
+
+.uploadGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding-top: var(--spacing-xs);
+}
+
+.uploadGroup label {
+  font-size: var(--font-size-large);
+}
+
+.uploadGroup input {
+  height: 32px;
+  font-size: var(--font-size-base);
 }
 
 .buttonContainer {
