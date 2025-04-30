@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "../Button/Button";
 import styles from "./Form.module.css";
+import { database } from "../../../firebaseConfig";
+import { addDoc, collection } from "firebase/firestore";
 
 const Form = ({ isAddingPlant, setIsAddingPlant }) => {
-  const [formData, setFormData] = useState({
+  const [plantDetails, setPlantDetails] = useState({
     commonName: "",
     scientificName: "",
     wateringSchedule: "",
@@ -12,21 +14,135 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
     temperatureRange: "",
     humidity: "",
     toxicity: "",
+    previewUrl: null,
+    image: null,
   });
 
   const [error, setError] = useState(null);
 
+  const fileInputRef = useRef(null);
+
+  // retrieving input values
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+    if (e.target.type === "file") return;
+    setPlantDetails((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  // retrieving image upload, and creating temporary url
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const previewUrl = URL.createObjectURL(file);
+      setPlantDetails((prevDetails) => ({
+        ...prevDetails,
+        image: file,
+        previewUrl: previewUrl,
+      }));
+      console.log(file);
+    } else {
+      setPlantDetails((prevDetails) => ({
+        ...prevDetails,
+        image: null,
+        previewUrl: null,
+      }));
+      console.log("please upload a valid file format");
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setPlantDetails((prevDetails) => ({
+      ...prevDetails,
+      image: null,
+      previewUrl: null,
+    }));
+    if (fileInputRef.current) {
+      fileInputRef.current = "";
+    }
+  };
+
+  //uploading image to cloudinary storage
+  const uploadImage = async () => {
+    const formData = new FormData();
+    formData.append("file", plantDetails.image);
+    formData.append(
+      "upload_preset",
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+    );
+    formData.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${
+          import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+        }/upload`,
+        { method: "POST", body: formData }
+      );
+      const data = await response.json();
+      console.log("image URL", data.secure_url);
+      console.log("Public ID", data.public_id);
+
+      setPlantDetails((prevDetails) => ({
+        ...prevDetails,
+        previewUrl: data.secure_url,
+      }));
+      setError(null);
+
+      return data.secure_url;
+    } catch (error) {
+      setError("Failed to upload the image");
+      console.log(error.message);
+      return null;
+    }
+  };
+
+  const saveDataToFirestore = async (plant) => {
+    try {
+      const docRef = await addDoc(
+        collection(database, "plant-collection"),
+        plant
+      );
+      console.log("Plant has been added with the id", docRef.id);
+    } catch (error) {
+      console.log(error.message, "failed to store the plant");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const imageUrl = await uploadImage();
+      const plantData = {
+        ...plantDetails,
+        image: imageUrl,
+      };
+      console.log(plantData);
+      await saveDataToFirestore(plantData);
+      setPlantDetails({
+        commonName: "",
+        scientificName: "",
+        wateringSchedule: "",
+        lightRequirement: "",
+        soilType: "",
+        temperatureRange: "",
+        humidity: "",
+        toxicity: "",
+        previewUrl: null,
+        image: null,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  // Closing the form modal, state from prop
   const handleCancel = () => {
     setIsAddingPlant(false);
   };
 
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <h2 className={styles.formTitle}>Add new plant</h2>
       <div className={styles.formGroup}>
         <label htmlFor="common-name">Common name</label>
@@ -35,7 +151,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           name="commonName"
           id="common-name"
           onChange={handleChange}
-          value={formData.commonName}
+          value={plantDetails.commonName}
         />
       </div>
       <div className={styles.formGroup}>
@@ -45,7 +161,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           name="scientificName"
           id="scientific-name"
           onChange={handleChange}
-          value={formData.scientificName}
+          value={plantDetails.scientificName}
         />
       </div>
       <div className={styles.formGroup}>
@@ -55,7 +171,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           name="wateringSchedule"
           id="watering-schedule"
           onChange={handleChange}
-          value={formData.wateringSchedule}
+          value={plantDetails.wateringSchedule}
         />
       </div>
       <div className={styles.formGroup}>
@@ -65,7 +181,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           name="lightRequirement"
           id="light-requirement"
           onChange={handleChange}
-          value={formData.lightRequirement}
+          value={plantDetails.lightRequirement}
         />
       </div>
       <div className={styles.formGroup}>
@@ -75,7 +191,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           name="soilType"
           id="soil-type"
           onChange={handleChange}
-          value={formData.soilType}
+          value={plantDetails.soilType}
         />
       </div>
       <div className={styles.formGroup}>
@@ -117,7 +233,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           name="humidity"
           id="humidity"
           onChange={handleChange}
-          value={formData.humidity}
+          value={plantDetails.humidity}
         >
           <option value="">Select option</option>
           <option value="low">Low</option>
@@ -131,7 +247,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           name="toxicity"
           id="toxicity"
           onChange={handleChange}
-          value={formData.toxicity}
+          value={plantDetails.toxicity}
         >
           <option value="">Select option</option>
           <option value="toxic">Toxic</option>
@@ -143,8 +259,31 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
         <label htmlFor="imageUpload">
           Please upload an image of your plant
         </label>
-        <input type="file" name="imageUpload" id="imageUpload" />
+        <input
+          type="file"
+          name="imageUpload"
+          id="imageUpload"
+          accept=".jpg .png .jpeg"
+          ref={fileInputRef}
+          onChange={handleImageChange}
+        />
       </div>
+      {plantDetails.previewUrl && (
+        <div className={styles.imagePreviewContainer}>
+          <img
+            src={plantDetails.previewUrl}
+            alt="plant image preview"
+            className={styles.imagePreview}
+          />
+          <button
+            className={styles.removeImageButton}
+            onClick={handleRemoveImage}
+          >
+            Upload a different image
+          </button>
+        </div>
+      )}
+      {error && <p>{error}</p>}
       <div className={styles.buttonContainer}>
         <Button className={styles.secondaryButton} onClick={handleCancel}>
           Cancel
