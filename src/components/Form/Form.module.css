@@ -73,38 +73,51 @@
   display: flex;
   gap: var(--spacing-sm);
   justify-content: flex-end;
+  align-items: center;
   padding-top: var(--spacing-md);
 }
 
 .imagePreviewContainer {
-  width: 100%; /* Occupies full width of the parent or viewport */
-  height: 100%; /* Occupies full height of the parent or viewport */
-  display: flex; /* Enables flexbox for centering */
+  width: 100%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
-  justify-content: center; /* Centers horizontally */
-  align-items: center; /* Centers vertically */
-  background-color: #f9f9f9; /* Optional: Light background for visibility */
-  border: 1px solid #ccc; /* Optional: Outline for the container */
-  padding: 8px; /* Space around the image */
-  overflow: hidden; /* Ensures clean containment of the image */
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-background-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  padding: var(--spacing-sm);
+  overflow: hidden;
 }
 .imagePreview {
-  max-width: 150px; /* Ensures the image stays small */
-  max-height: 150px; /* Maintains proportional scaling */
-  object-fit: cover; /* Prevents distortion and keeps scaling proportional */
-  border-radius: 4px; /* Adds rounding to the image for aesthetics */
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: var(--radius-small);
 }
 .removeImageButton {
-  margin-top: 8px;
-  background-color: #ffb9c4; /* Red for emphasis */
+  margin-top: var(--spacing-sm);
+  background-color: var(--color-text-muted);
+  color: #ffffff;
   border: none;
-  border-radius: 4px;
-  padding: 6px 10px; /* Compact padding */
-  font-size: 14px; /* Standard button text size */
-  cursor: pointer; /* Indicates clickable action */
+  border-radius: var(--radius-small);
+  padding: var(--spacing-sm) var(--spacing-sm);
+  font-size: 14px;
+  cursor: pointer;
 }
 .removeImageButton:hover {
-  background-color: #ffa3b1; /* Slightly darker red for hover effect */
+  background-color: var(--color-button-hover);
+}
+
+.validationMessage {
+  color: var(--color-accent);
+}
+
+.validFormMessage {
+  color: var(--color-button-primary);
+  font-size: var(--font-size-large);
+  font-weight: bold;
 }
 
 @media screen and (max-width: 1024px) {
