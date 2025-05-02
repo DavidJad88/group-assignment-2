@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../Button/Button";
 import styles from "./Form.module.css";
 import { database } from "../../../firebaseConfig";
@@ -20,7 +20,18 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
 
   const [error, setError] = useState(null);
 
+  const [formValidated, setFormValidated] = useState(null);
+
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (formValidated) {
+      const interval = setTimeout(() => {
+        setFormValidated(null);
+      }, 3000);
+      return () => clearTimeout(interval);
+    }
+  }, [formValidated]);
 
   // retrieving input values
 
@@ -29,6 +40,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
 
     if (e.target.type === "file") return;
     setPlantDetails((prevData) => ({ ...prevData, [name]: value }));
+    setError((prevError) => ({ ...prevError, [name]: "" }));
   };
 
   // retrieving image upload, and creating temporary url
@@ -41,6 +53,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
         image: file,
         previewUrl: previewUrl,
       }));
+      setError((prevError) => ({ ...prevError, image: "" }));
       console.log(file);
     } else {
       setPlantDetails((prevDetails) => ({
@@ -58,8 +71,9 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
       image: null,
       previewUrl: null,
     }));
+    setError((prevError) => ({ ...prevError, image: "" }));
     if (fileInputRef.current) {
-      fileInputRef.current = "";
+      fileInputRef.current.value = "";
     }
   };
 
@@ -109,8 +123,85 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
     }
   };
 
+  const ValidateInput = () => {
+    const errorObj = { ...error };
+    let isValid = true;
+
+    if (!plantDetails.commonName.trim()) {
+      errorObj.commonName = "Common name is required";
+      isValid = false;
+    } else {
+      errorObj.commonName = "";
+    }
+
+    if (!plantDetails.scientificName.trim()) {
+      errorObj.scientificName = "Scientific name is required";
+      isValid = false;
+    } else {
+      errorObj.scientificName = "";
+    }
+
+    if (!plantDetails.wateringSchedule.trim()) {
+      errorObj.wateringSchedule = "Watering schedule is required";
+      isValid = false;
+    } else {
+      errorObj.wateringSchedule = "";
+    }
+
+    if (!plantDetails.lightRequirement.trim()) {
+      errorObj.lightRequirement = "Light requirement is required";
+      isValid = false;
+    } else {
+      errorObj.lightRequirement = "";
+    }
+
+    if (!plantDetails.soilType.trim()) {
+      errorObj.soilType = "Soil type is required";
+      isValid = false;
+    } else {
+      errorObj.soilType = "";
+    }
+
+    if (!plantDetails.temperatureRange) {
+      errorObj.temperatureRange = "Please select a temperature range";
+      isValid = false;
+    } else {
+      errorObj.temperatureRange = "";
+    }
+
+    if (!plantDetails.humidity) {
+      errorObj.humidity = "Please select humidity";
+      isValid = false;
+    } else {
+      errorObj.humidity = "";
+    }
+
+    if (!plantDetails.toxicity) {
+      errorObj.toxicity = "Please select if toxic/non-toxic";
+      isValid = false;
+    } else {
+      errorObj.toxicity = "";
+    }
+
+    if (!plantDetails.image) {
+      errorObj.image = "Please upload an image";
+      isValid = false;
+    } else {
+      errorObj.image = "";
+    }
+
+    setError(errorObj);
+
+    return isValid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formIsValid = ValidateInput();
+    if (!formIsValid) {
+      return;
+    }
+
     try {
       const imageUrl = await uploadImage();
       const plantData = {
@@ -134,6 +225,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
     } catch (error) {
       console.log(error.message);
     }
+    setFormValidated("Plant has been added");
   };
 
   // Closing the form modal, state from prop
@@ -153,6 +245,9 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           onChange={handleChange}
           value={plantDetails.commonName}
         />
+        {error && (
+          <p className={styles.validationMessage}>{error.commonName}</p>
+        )}
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="scientific-name">Scientific name</label>
@@ -163,6 +258,9 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           onChange={handleChange}
           value={plantDetails.scientificName}
         />
+        {error && (
+          <p className={styles.validationMessage}>{error.scientificName}</p>
+        )}
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="watering-schedule">Watering schedule</label>
@@ -173,6 +271,9 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           onChange={handleChange}
           value={plantDetails.wateringSchedule}
         />
+        {error && (
+          <p className={styles.validationMessage}>{error.wateringSchedule}</p>
+        )}
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="light-requirement">Light requirement</label>
@@ -183,6 +284,9 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           onChange={handleChange}
           value={plantDetails.lightRequirement}
         />
+        {error && (
+          <p className={styles.validationMessage}>{error.lightRequirement}</p>
+        )}
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="soil-type">Soil type</label>
@@ -193,6 +297,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           onChange={handleChange}
           value={plantDetails.soilType}
         />
+        {error && <p className={styles.validationMessage}>{error.soilType}</p>}
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="temperature-range">Temperature range</label>
@@ -201,7 +306,8 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
             type="radio"
             name="temperatureRange"
             id="cold"
-            value={"cold"}
+            value={"Cold 5 - 15°C"}
+            checked={plantDetails.temperatureRange === "Cold 5 - 15°C"}
             onChange={handleChange}
           ></input>
           <label htmlFor="cold">Cold 5 - 15°C</label>
@@ -211,7 +317,8 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
             type="radio"
             name="temperatureRange"
             id="temperate"
-            value={"temperate"}
+            value={"Temperate 15 - 22°C"}
+            checked={plantDetails.temperatureRange === "Temperate 15 - 22°C"}
             onChange={handleChange}
           ></input>
           <label htmlFor="temperate">Temperate 15 - 22°C</label>
@@ -221,11 +328,15 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
             type="radio"
             name="temperatureRange"
             id="warm"
-            value={"warm"}
+            value={"Warm 22 - 30°C"}
+            checked={plantDetails.temperatureRange === "Warm 22 - 30°C"}
             onChange={handleChange}
           ></input>
           <label htmlFor="warm">Warm 22 - 30°C</label>
         </div>
+        {error && (
+          <p className={styles.validationMessage}>{error.temperatureRange}</p>
+        )}
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="humidity">Humidity</label>
@@ -240,6 +351,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           <option value="medium">Medium</option>
           <option value="high">High</option>
         </select>
+        {error && <p className={styles.validationMessage}>{error.humidity}</p>}
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="toxicity">Toxicity</label>
@@ -253,6 +365,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           <option value="toxic">Toxic</option>
           <option value="non-toxic">Non-toxic</option>
         </select>
+        {error && <p className={styles.validationMessage}>{error.toxicity}</p>}
       </div>
 
       <div className={styles.uploadGroup}>
@@ -267,6 +380,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           ref={fileInputRef}
           onChange={handleImageChange}
         />
+        {error && <p className={styles.validationMessage}>{error.image}</p>}
       </div>
       {plantDetails.previewUrl && (
         <div className={styles.imagePreviewContainer}>
@@ -283,8 +397,10 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           </button>
         </div>
       )}
-      {error && <p>{error}</p>}
       <div className={styles.buttonContainer}>
+        {formValidated && (
+          <p className={styles.validFormMessage}>{formValidated}</p>
+        )}
         <Button className={styles.secondaryButton} onClick={handleCancel}>
           Cancel
         </Button>
