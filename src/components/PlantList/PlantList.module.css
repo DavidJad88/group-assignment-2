@@ -2,7 +2,9 @@
   width: 100%;
   height: auto;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: start;
   padding: var(--spacing-lg);
+  gap: var(--spacing-lg);
   list-style: none;
 }
