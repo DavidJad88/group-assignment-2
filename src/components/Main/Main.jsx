@@ -9,20 +9,30 @@ import { useState } from "react";
 
 const Main = () => {
   const [isAddingPlant, setIsAddingPlant] = useState(false);
+  //states for search/sort/filter as props to PlantList
+  const [plantFilter, setPlantFilter] = useState(null);
 
   const handleChange = () => {
     setIsAddingPlant(true);
+  };
+
+  const handleFilterChange = (value) => {
+    console.log(value);
+
+    setPlantFilter(value);
   };
 
   return (
     <>
       <main className={styles.main}>
         <div className={styles.toolsContainer}>
-          <Filter />
+          <Filter onClick={handleFilterChange} />
           <Sort />
           <Button onClick={handleChange}>Add New</Button>
         </div>
-        <PlantList />
+
+        <PlantList plantFilter={plantFilter} />
+
         {isAddingPlant && (
           <FormModal
             isAddingPlant={isAddingPlant}

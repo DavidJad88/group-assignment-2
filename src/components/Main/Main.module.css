@@ -9,8 +9,10 @@
 
 .toolsContainer {
   width: 100%;
-  height: 100px;
+  height: 50px;
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
   padding: 0 var(--spacing-md);
   gap: var(--spacing-md);
 }
