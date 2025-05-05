@@ -7,7 +7,7 @@ import FormModal from "../FormModal/FormModal";
 import Button from "../Button/Button";
 import { useState } from "react";
 
-const Main = () => {
+const Main = ({searchTerm}) => {
   const [isAddingPlant, setIsAddingPlant] = useState(false);
 
   const handleChange = () => {
@@ -22,7 +22,7 @@ const Main = () => {
           <Sort />
           <Button onClick={handleChange}>Add New</Button>
         </div>
-        <PlantList />
+        <PlantList searchTerm={searchTerm}/>
         {isAddingPlant && (
           <FormModal
             isAddingPlant={isAddingPlant}

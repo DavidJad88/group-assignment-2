@@ -6,10 +6,14 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const PlantList = () => {
+const PlantList = ({searchTerm}) => {
   const [plantsCollection, setPlantsCollection] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [isViewingPlant, setIsViewingPlant] = useState(false);
+
+  const filteredPlants = plantsCollection.filter((plant) =>
+    plant.commonName.toLowerCase().startsWith(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -44,7 +48,7 @@ const PlantList = () => {
   return (
     <>
       <ul className={styles.plantListContainer}>
-        {plantsCollection.map((plant) => {
+        {filteredPlants.map((plant) => {
           return (
             <PlantCard
               plant={plant}
@@ -54,6 +58,11 @@ const PlantList = () => {
           );
         })}
       </ul>
+
+      {filteredPlants.length === 0 && (
+        <p className={styles.noResults}>No result</p>
+      )}
+
       {isViewingPlant && (
         <PlantModal
           selectedPlant={selectedPlant}
