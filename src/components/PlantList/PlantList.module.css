@@ -1,9 +1,9 @@
 .plantListContainer {
   width: 100%;
   height: auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: start;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, max-content));
+  place-content: center;
   padding: var(--spacing-lg);
   gap: var(--spacing-lg);
   list-style: none;
@@ -14,4 +14,3 @@
   flex-direction: row;
   justify-content: center;
 }
-

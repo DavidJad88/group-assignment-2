@@ -1,9 +1,9 @@
 .button {
-  height: 48px;
+  height: 40px;
   width: 120px;
   background-color: var(--color-button-primary);
   font-size: var(--font-size-base);
-  color: white;
+  color: var(--color-background-base);
   border: none;
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-small);
@@ -17,6 +17,5 @@
   background-color: var(--color-button-active);
 }
 .button:disabled {
-  background-color: var(--color-primary-light);
   cursor: not-allowed;
 }

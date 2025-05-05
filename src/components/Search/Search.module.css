@@ -1,5 +1,5 @@
 .searchContainer {
-  width: 500px;
+  width: 400px;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -18,6 +18,10 @@
   flex-basis: 75%;
   height: 32px;
   padding-left: var(--spacing-sm);
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius-small);
   border: 2px solid var(--color-border);
+}
+
+.searchInput:focus {
+  outline-color: var(--color-text-muted);
 }
