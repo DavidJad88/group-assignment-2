@@ -6,10 +6,14 @@ import { collection, onSnapshot, orderBy, query, where } from "firebase/firestor
 import { useEffect } from "react";
 import { useState } from "react";
 
-const PlantList = ({ plantFilter, sortPlants }) => {
+const PlantList = ({ searchTerm, plantFilter, sortPlants }) => {
   const [plantsCollection, setPlantsCollection] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [isViewingPlant, setIsViewingPlant] = useState(false);
+
+  const filteredPlants = plantsCollection.filter((plant) =>
+    plant.commonName.toLowerCase().startsWith(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     let queryRef = collection(database, "plant-collection");
@@ -66,7 +70,7 @@ const PlantList = ({ plantFilter, sortPlants }) => {
   return (
     <>
       <ul className={styles.plantListContainer}>
-        {plantsCollection.map((plant) => {
+        {filteredPlants.map((plant) => {
           return (
             <PlantCard
               plant={plant}
@@ -76,6 +80,11 @@ const PlantList = ({ plantFilter, sortPlants }) => {
           );
         })}
       </ul>
+
+      {filteredPlants.length === 0 && (
+        <p className={styles.noResults}>No result</p>
+      )}
+
       {isViewingPlant && (
         <PlantModal
           selectedPlant={selectedPlant}

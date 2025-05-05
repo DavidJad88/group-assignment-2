@@ -6,7 +6,7 @@ import FormModal from "../FormModal/FormModal";
 import Button from "../Button/Button";
 import { useState } from "react";
 
-const Main = () => {
+const Main = ({searchTerm}) => {
   const [isAddingPlant, setIsAddingPlant] = useState(false);
   //states for search/sort/filter as props to PlantList
   const [plantFilter, setPlantFilter] = useState(null);
@@ -33,7 +33,7 @@ const Main = () => {
           <Button onClick={handleChange}>Add New</Button>
         </div>
 
-        <PlantList plantFilter={plantFilter} sortPlants={sortPlants} />
+        <PlantList searchTerm={searchTerm} plantFilter={plantFilter} sortPlants={sortPlants}/>
 
         {isAddingPlant && (
           <FormModal
