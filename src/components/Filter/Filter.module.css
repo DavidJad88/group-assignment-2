@@ -1,0 +1,7 @@
+.filterSelect {
+  height: 48px;
+  font-size: var(--font-size-base);
+  color: white;
+  background-color: var(--color-button-primary);
+  padding: 0 var(--spacing-sm);
+}
