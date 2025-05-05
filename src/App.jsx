@@ -7,10 +7,11 @@ import Main from "./components/Main/Main";
 import styles from "./App.module.css";
 
 function App() {
+    const [searchTerm, setSearchTerm] = useState ("")
   return (
     <>
-      <Header />
-      <Main />
+      <Header setSearchTerm={setSearchTerm}/>
+      <Main searchTerm={searchTerm}/>
       <Footer />
     </>
   );

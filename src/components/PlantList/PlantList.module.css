@@ -8,3 +8,10 @@
   gap: var(--spacing-lg);
   list-style: none;
 }
+
+.noResults {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
