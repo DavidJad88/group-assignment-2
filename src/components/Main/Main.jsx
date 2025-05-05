@@ -1,5 +1,4 @@
 import styles from "./Main.module.css";
-
 import PlantList from "../PlantList/PlantList";
 import Filter from "../Filter/Filter";
 import Sort from "../Sort/Sort";
@@ -11,28 +10,31 @@ const Main = ({searchTerm}) => {
   const [isAddingPlant, setIsAddingPlant] = useState(false);
   //states for search/sort/filter as props to PlantList
   const [plantFilter, setPlantFilter] = useState(null);
+  const [sortPlants, setSortPlants] = useState(null);
 
   const handleChange = () => {
     setIsAddingPlant(true);
   };
 
   const handleFilterChange = (value) => {
-    console.log(value);
-
     setPlantFilter(value);
   };
+
+  const handleSortChange = (value) => {
+    setSortPlants(value)
+  }
 
   return (
     <>
       <main className={styles.main}>
         <div className={styles.toolsContainer}>
           <Filter onClick={handleFilterChange} />
-          <Sort />
+          <Sort onClick={handleSortChange} />
           <Button onClick={handleChange}>Add New</Button>
         </div>
 
-        <PlantList plantFilter={plantFilter, searchTerm} />
-          
+        <PlantList searchTerm={searchTerm} plantFilter={plantFilter} sortPlants={sortPlants}/>
+
         {isAddingPlant && (
           <FormModal
             isAddingPlant={isAddingPlant}

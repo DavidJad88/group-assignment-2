@@ -2,13 +2,11 @@ import styles from "./PlantList.module.css";
 import PlantCard from "../PlantCard/PlantCard";
 import PlantModal from "../PlantModal/PlantModal";
 import { database } from "../../../firebaseConfig";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useEffect } from "react";
 import { useState } from "react";
 
-
-const PlantList = ({ plantFilter, searchTerm }) => {
-
+const PlantList = ({ searchTerm, plantFilter, sortPlants }) => {
   const [plantsCollection, setPlantsCollection] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [isViewingPlant, setIsViewingPlant] = useState(false);
@@ -20,6 +18,7 @@ const PlantList = ({ plantFilter, searchTerm }) => {
   useEffect(() => {
     let queryRef = collection(database, "plant-collection");
 
+    // filter
     if (plantFilter) {
       if (["toxic", "non-toxic"].includes(plantFilter)) {
         queryRef = query(queryRef, where("toxicity", "==", plantFilter));
@@ -28,18 +27,34 @@ const PlantList = ({ plantFilter, searchTerm }) => {
       }
     }
 
+    // sort
+    if (sortPlants) {
+      queryRef = query(queryRef, orderBy("commonName", sortPlants));
+    }
+
     const unsubscribe = onSnapshot(queryRef, (snapshot) => {
       const plantData = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setPlantsCollection(plantData);
+
+      const sortedPlants = [...plantData].sort((a, b) => {
+        const nameA = a.commonName?.toLowerCase().trim();
+        const nameB = b.commonName?.toLowerCase().trim();
+
+        if (sortPlants === "desc") {
+          return nameB.localeCompare(nameA);
+        }
+        return nameA.localeCompare(nameB);
+      });
+
+      setPlantsCollection(sortedPlants);
     });
 
     return () => {
       unsubscribe();
     };
-  }, [plantFilter]);
+  }, [plantFilter, sortPlants]);
 
   // plant modal
   const handlePlantSelection = (plant) => {
