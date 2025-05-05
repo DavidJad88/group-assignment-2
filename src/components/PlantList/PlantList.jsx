@@ -2,11 +2,13 @@ import styles from "./PlantList.module.css";
 import PlantCard from "../PlantCard/PlantCard";
 import PlantModal from "../PlantModal/PlantModal";
 import { database } from "../../../firebaseConfig";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const PlantList = ({searchTerm}) => {
+
+const PlantList = ({ plantFilter, searchTerm }) => {
+
   const [plantsCollection, setPlantsCollection] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [isViewingPlant, setIsViewingPlant] = useState(false);
@@ -16,23 +18,28 @@ const PlantList = ({searchTerm}) => {
   );
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(database, "plant-collection"),
-      (snapshot) => {
-        const plantData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        console.log(plantData);
+    let queryRef = collection(database, "plant-collection");
 
-        setPlantsCollection(plantData);
+    if (plantFilter) {
+      if (["toxic", "non-toxic"].includes(plantFilter)) {
+        queryRef = query(queryRef, where("toxicity", "==", plantFilter));
+      } else if (["low", "medium", "high"].includes(plantFilter)) {
+        queryRef = query(queryRef, where("humidity", "==", plantFilter));
       }
-    );
+    }
+
+    const unsubscribe = onSnapshot(queryRef, (snapshot) => {
+      const plantData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setPlantsCollection(plantData);
+    });
 
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [plantFilter]);
 
   // plant modal
   const handlePlantSelection = (plant) => {
