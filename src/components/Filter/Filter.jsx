@@ -1,5 +1,4 @@
 import styles from "./Filter.module.css";
-import Button from "../Button/Button";
 
 const Filter = ({ onClick }) => {
   const handleChange = (e) => {
@@ -9,7 +8,7 @@ const Filter = ({ onClick }) => {
     <>
       <select onChange={handleChange} className={styles.filterSelect}>
         <option defaultChecked value="">
-          Select filter option
+          Filter by
         </option>
         <option value="toxic">Toxic</option>
         <option value="non-toxic">Non-toxic</option>

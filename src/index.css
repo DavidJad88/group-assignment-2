@@ -14,7 +14,8 @@
   --color-border: #d9d9d9;
   --color-button-primary: #2f5130;
   --color-button-hover: #5a7f5f;
-  --color-button-active: hsl(128, 17%, 58%);
+  --color-secondary-button-hover: #1f2d1e0b;
+  --color-button-active: #82a687;
   --color-text-primary: #1f2d1e;
   --color-text-muted: #5f6f61;
 
@@ -43,5 +44,6 @@
 }
 
 body {
+  min-width: 350px;
   font-family: var(--font-family-base);
 }

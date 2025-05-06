@@ -30,7 +30,7 @@ const Main = ({searchTerm}) => {
         <div className={styles.toolsContainer}>
           <Filter onClick={handleFilterChange} />
           <Sort onClick={handleSortChange} />
-          <Button onClick={handleChange}>Add New</Button>
+          <Button onClick={handleChange}>Add</Button>
         </div>
 
         <PlantList searchTerm={searchTerm} plantFilter={plantFilter} sortPlants={sortPlants}/>

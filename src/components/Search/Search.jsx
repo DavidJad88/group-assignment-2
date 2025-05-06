@@ -8,7 +8,7 @@ const Search = ({setSearchTerm}) => {
   return (
     <div className={styles.searchContainer}>
       <label className={styles.searchLabel} htmlFor="search">
-        🔎
+        <img src="/assets/icons/search_FILL0.svg" alt="search icon" />
       </label>
       <input
         className={styles.searchInput}
