@@ -1,6 +1,6 @@
 .plantCard {
   width: 250px;
-  height: 300px;
+  height: auto;
   background: var(--color-background-card);
   border-radius: var(--radius-medium);
   padding: var(--spacing-md);
@@ -20,6 +20,7 @@
 .plantImageContainer img {
   width: 100%;
   aspect-ratio: 1;
+  object-fit: cover;
   border-radius: var(--radius-medium);
 }
 
@@ -37,4 +38,10 @@
 .plantNameContainer p {
   color: var(--color-text-muted);
   font-style: italic;
+}
+
+@media screen and (max-width: 571px) {
+  .plantCard {
+    width: 340px;
+  }
 }

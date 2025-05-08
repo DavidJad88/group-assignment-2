@@ -33,7 +33,7 @@ All information is synced with a cloud database to ensure persistence across ses
 - Git Version Control: Project managed via Git and hosted on GitHub.
 
 ## Deployment
-Live Demo: 
+Live Demo: plantpal1.netlify.app
 Deployed using: Netlify 
 
 ## License

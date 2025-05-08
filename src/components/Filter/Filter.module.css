@@ -14,6 +14,10 @@
   background-color: var(--color-secondary-button-hover);
 }
 
+.filterSelect:focus {
+  outline-color: var(--color-text-muted);
+}
+
 @media screen and (max-width: 430px) {
   .filterSelect {
     width: 130px;
