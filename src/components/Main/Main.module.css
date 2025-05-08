@@ -16,3 +16,9 @@
   padding: 0 var(--spacing-md);
   gap: var(--spacing-md);
 }
+
+@media screen and (max-width: 571px) {
+  .toolsContainer {
+    justify-content: space-between;
+  }
+}
