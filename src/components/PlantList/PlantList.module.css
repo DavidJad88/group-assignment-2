@@ -17,6 +17,9 @@
 
 @media screen and (max-width: 571px) {
   .plantListContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: var(--spacing-sm);
   }
 }
