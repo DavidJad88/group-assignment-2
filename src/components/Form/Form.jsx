@@ -242,6 +242,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           type="text"
           name="commonName"
           id="common-name"
+          maxLength={40}
           onChange={handleChange}
           value={plantDetails.commonName}
         />
@@ -255,6 +256,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           type="text"
           name="scientificName"
           id="scientific-name"
+          maxLength={40}
           onChange={handleChange}
           value={plantDetails.scientificName}
         />
@@ -268,6 +270,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           type="text"
           name="wateringSchedule"
           id="watering-schedule"
+          maxLength={40}
           onChange={handleChange}
           value={plantDetails.wateringSchedule}
         />
@@ -281,6 +284,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           type="text"
           name="lightRequirement"
           id="light-requirement"
+          maxLength={40}
           onChange={handleChange}
           value={plantDetails.lightRequirement}
         />
@@ -294,6 +298,7 @@ const Form = ({ isAddingPlant, setIsAddingPlant }) => {
           type="text"
           name="soilType"
           id="soil-type"
+          maxLength={40}
           onChange={handleChange}
           value={plantDetails.soilType}
         />
