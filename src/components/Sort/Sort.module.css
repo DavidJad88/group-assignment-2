@@ -13,3 +13,7 @@
 .sortSelect:hover {
   background-color: var(--color-secondary-button-hover);
 }
+
+.sortSelect:focus {
+  outline-color: var(--color-text-muted);
+}
