@@ -27,16 +27,14 @@ All information is synced with a cloud database to ensure persistence across ses
 - Search Functionality: Users can search plants by name, dynamically filtering the list.
 - Plant Detail View: Click on a card to view plant details in a modal.
 - Add New Plant: A form to submit new plants, including validation and feedback messages.
-- Sorting and Filtering: Users can sort or filter plants based on care attributes (e.g., <-!--> ).
+- Sorting and Filtering: Users can sort or filter plants based on care attributes.
 - Database Integration: All plant data is stored and retrieved from Firestore. 
 - Responsive Layout: Mobile-friendly UI with clear structure and accessibility considerations.
 - Git Version Control: Project managed via Git and hosted on GitHub.
 
 ## Deployment
-Live Demo: https://plantpal.netlify.app    <-!-->
+Live Demo: 
 Deployed using: Netlify 
 
 ## License
 MIT License
-
-## Contact 
